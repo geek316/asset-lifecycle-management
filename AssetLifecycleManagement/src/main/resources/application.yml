@@ -6,16 +6,18 @@ server:
 spring:
   application:
     name: AssetLifecycleManagement
+  profiles:
+    include: local
 # spring security
   security:
     user:
       name: user
-      password: pass
+      password: ${SECURITY_PASSWORD:pass}
 # database
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: mysecretpassword
+    password: ${DB_PASSWORD:mysecretpassword}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
