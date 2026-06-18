@@ -36,8 +36,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional(readOnly = true)
     @Override
     @Cacheable(value = CACHE_EMPLOYEES, key = "#employeeId")
-    public EmployeeResponseDTO getEmployee(Long empId) {
-        EmployeeEntity employeeEntity = employeeRepository.getReferenceById(empId);
+    public EmployeeResponseDTO getEmployee(Long employeeId) {
+        EmployeeEntity employeeEntity = employeeRepository.getReferenceById(employeeId);
         EmployeeResponseDTO responseDto = employeeMapper.toResponseDto(employeeEntity);
         log.info("Found employee: {} with employeeId: {}", responseDto.getFullName(), responseDto.getEmployeeId());
         return responseDto;
@@ -77,24 +77,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     @Override
     @CachePut(value = CACHE_EMPLOYEES, key = "#result.employeeId")
-    public EmployeeResponseDTO updateEmployee(Long empId, EmployeeUpdateRequestDTO dto) {
+    public EmployeeResponseDTO updateEmployee(Long employeeId, EmployeeUpdateRequestDTO dto) {
 
-        EmployeeEntity existingEmployee = employeeRepository.getReferenceById(empId);
+        EmployeeEntity existingEmployee = employeeRepository.getReferenceById(employeeId);
 
         EmployeeEntity updatedEmployee = employeeRepository.save(employeeMapper.updateEntity(existingEmployee, dto));
-        log.info("Employee updated successfully with employeeId: {}", empId);
+        log.info("Employee updated successfully with employeeId: {}", employeeId);
         return employeeMapper.toResponseDto(updatedEmployee);
     }
 
     @Transactional
     @Override
     @CacheEvict(value = CACHE_EMPLOYEES, key = "#employeeId")
-    public void deleteEmployee(Long empId) {
+    public void deleteEmployee(Long employeeId) {
 
-        EmployeeEntity existingEmployee = employeeRepository.getReferenceById(empId);
+        EmployeeEntity existingEmployee = employeeRepository.getReferenceById(employeeId);
 
         employeeRepository.delete(existingEmployee);
-        log.info("Employee with employeeId:{} deleted successfully", empId);
+        log.info("Employee with employeeId:{} deleted successfully", employeeId);
     }
 
 }
