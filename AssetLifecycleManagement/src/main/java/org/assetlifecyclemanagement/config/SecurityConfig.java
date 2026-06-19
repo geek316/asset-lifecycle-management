@@ -5,10 +5,11 @@ import org.assetlifecyclemanagement.utilities.EmployeeDetailsService;
 import org.assetlifecyclemanagement.utilities.JWTAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -31,11 +33,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/health","/authenticate").permitAll()
-                        .requestMatchers("/cache").hasRole("Admin")
-                        .anyRequest().authenticated());
-        httpSecurity.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//                .httpBasic(Customizer.withDefaults());
+                        .requestMatchers("/health", "/authenticate").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/employees").permitAll()
+                        .anyRequest().authenticated()
+                );
+        httpSecurity.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);  // JWT authentication filter
+//                .httpBasic(Customizer.withDefaults()); // basic authentication filter
         return httpSecurity.build();
     }
 

@@ -9,6 +9,7 @@ import org.assetlifecyclemanagement.config.MultiLevelCacheManager;
 import org.springframework.cache.Cache;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class CacheController {
 
     @Operation(summary = "Get stats of cache", description = "Retrieves detailed information of cache getting used in the application.")
     @GetMapping("/stats")
+    @PreAuthorize("hasAuthority('CACHE_READ')")
     public ResponseEntity<String> getCacheStats() {
         Cache cache = multiLevelCacheManager.getCache("employees");
 
@@ -42,6 +44,7 @@ public class CacheController {
 
     @Operation(summary = "Clear Cache", description = "Clears the cache stored for the the application.")
     @DeleteMapping("/clear")
+    @PreAuthorize("hasAuthority('CACHE_DELETE')")
     public ResponseEntity<String> clearCache() {
         // Clear all caches
         multiLevelCacheManager.getCacheNames().forEach(name -> {
