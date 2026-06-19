@@ -28,7 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/health").permitAll()
+                        .requestMatchers("/health","/authenticate").permitAll()
                         .requestMatchers("/cache").hasRole("Admin")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());
