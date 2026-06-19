@@ -16,8 +16,8 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "employee")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class EmployeeEntity extends AuditEntity implements UserDetails {
 
@@ -89,4 +89,5 @@ public class EmployeeEntity extends AuditEntity implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
 }

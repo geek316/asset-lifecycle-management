@@ -1,7 +1,9 @@
-package org.assetlifecyclemanagement.employee;
+package org.assetlifecyclemanagement.utilities;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.assetlifecyclemanagement.employee.EmployeeEntity;
+import org.assetlifecyclemanagement.employee.EmployeeRepository;
 import org.assetlifecyclemanagement.enums.Status;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;

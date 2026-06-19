@@ -25,6 +25,13 @@ public class EmployeeCreateRequestDTO {
     @Pattern(regexp = "^[a-zA-Z\\s-]+$", message = "Last name can only contain letters, spaces, and hyphens")
     private String lastName;
 
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, max = 255, message = "Length of password must be between 8 and 255 characters")
+    private String password;
+
+    @Size(min = 10, max = 20, message = "Length of the phoneNumber should not exceed 20 characters")
+    private String phoneNumber;
+
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     @Size(max = 150, message = "Email must not exceed 150 characters")

@@ -10,6 +10,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     @Override
@@ -68,6 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService{
             throw new DuplicateEmployeeException("email", dto.getEmail());
         }
         EmployeeEntity employeeEntity = employeeMapper.toEntity(dto);
+        employeeEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
         EmployeeEntity savedEmployee = employeeRepository.save(employeeEntity);
         EmployeeResponseDTO responseDto = employeeMapper.toResponseDto(savedEmployee);
         log.info("Employee: {} created successfully with employeeId: {}", responseDto.getFullName(), responseDto.getEmployeeId());
@@ -81,7 +84,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 
         EmployeeEntity existingEmployee = employeeRepository.getReferenceById(employeeId);
 
-        EmployeeEntity updatedEmployee = employeeRepository.save(employeeMapper.updateEntity(existingEmployee, dto));
+        EmployeeEntity updatedEmployee = employeeMapper.updateEntity(existingEmployee, dto);
+        if (dto.getPassword() != null) {
+            updatedEmployee.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+        employeeRepository.save(updatedEmployee);
         log.info("Employee updated successfully with employeeId: {}", employeeId);
         return employeeMapper.toResponseDto(updatedEmployee);
     }

@@ -1,10 +1,5 @@
 package org.assetlifecyclemanagement.employee;
 
-import org.assetlifecyclemanagement.config.MultiLevelCacheManager;
-import org.assetlifecyclemanagement.employee.dto.EmployeeCreateRequestDTO;
-import org.assetlifecyclemanagement.employee.dto.EmployeeResponseDTO;
-import org.assetlifecyclemanagement.employee.dto.EmployeeUpdateRequestDTO;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,14 +8,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.Cache;
-import org.springframework.cache.concurrent.ConcurrentMapCache;
+import org.assetlifecyclemanagement.employee.dto.EmployeeCreateRequestDTO;
+import org.assetlifecyclemanagement.employee.dto.EmployeeResponseDTO;
+import org.assetlifecyclemanagement.employee.dto.EmployeeUpdateRequestDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -30,7 +25,6 @@ import java.util.Map;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-    private final MultiLevelCacheManager multiLevelCacheManager;
 
     @Operation(summary = "Get employee by employee code", description = "Retrieves detailed information of a specific employee using their unique employee code")
     @ApiResponses(value = {
@@ -98,42 +92,6 @@ public class EmployeeController {
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long employeeId) {
         employeeService.deleteEmployee(employeeId);
         return ResponseEntity.noContent().build();
-    }
-
-
-    @Hidden
-    @GetMapping("/cache/stats")
-    public ResponseEntity<String> getCacheStats() {
-        Cache cache = multiLevelCacheManager.getCache("employees");
-
-        if (cache instanceof ConcurrentMapCache concurrentMapCache) {
-            Map<Object, Object> nativeCache = concurrentMapCache.getNativeCache();
-            StringBuilder sb = new StringBuilder("Cache contents:\n");
-            nativeCache.forEach((key, value) -> sb.append(key).append(" = ").append(value).append("\n"));
-            return ResponseEntity.ok(sb.toString());
-        }
-
-        return ResponseEntity.ok("No cache stats available or unsupported cache type");
-    }
-
-    @Hidden
-    @DeleteMapping("/cache/clear")
-    public ResponseEntity<String> clearCache() {
-        // Clear all caches
-        multiLevelCacheManager.getCacheNames().forEach(name -> {
-            Cache cache = multiLevelCacheManager.getCache(name);
-            if (cache != null) {
-                cache.clear();
-                log.info("Cleared cache: {}", name);
-            }
-        });
-        return ResponseEntity.ok("All caches cleared successfully");
-    }
-
-    @Hidden
-    @GetMapping("/health")
-    public ResponseEntity<String> getHealth() {
-        return new ResponseEntity<>("Health Ok!", HttpStatus.OK);
     }
 
 }

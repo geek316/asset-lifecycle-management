@@ -8,11 +8,6 @@ spring:
     name: AssetLifecycleManagement
   profiles:
     include: local
-# spring security
-  security:
-    user:
-      name: user
-      password: ${SECURITY_PASSWORD:pass}
 # database
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
