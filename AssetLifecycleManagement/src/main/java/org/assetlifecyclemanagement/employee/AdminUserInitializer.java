@@ -12,10 +12,10 @@ import java.time.LocalDate;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AdminUserInitializer implements CommandLineRunner{
+public class AdminUserInitializer implements CommandLineRunner {
 
-    private final PasswordEncoder passwordEncoder;
     private final EmployeeRepository employeeRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -35,7 +35,7 @@ public class AdminUserInitializer implements CommandLineRunner{
             admin.setDepartment("IT");      // Short - use "IT", "HR", "FIN", etc.
             admin.setDesignation("Admin");   // Short - use "Admin", "Manager", etc.
             admin.setPhoneNumber("1234567890"); // 10 digits
-            admin.setDateOfJoining(LocalDate.of(2026,1,1));
+            admin.setDateOfJoining(LocalDate.of(2026, 1, 1));
             admin.setStatus(Status.ACTIVE);      // Short
 
             employeeRepository.save(admin);
