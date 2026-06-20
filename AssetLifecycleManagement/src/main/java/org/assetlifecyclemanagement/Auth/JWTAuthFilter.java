@@ -1,4 +1,4 @@
-package org.assetlifecyclemanagement.utilities;
+package org.assetlifecyclemanagement.Auth;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

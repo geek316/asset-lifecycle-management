@@ -1,4 +1,4 @@
-package org.assetlifecyclemanagement.config;
+package org.assetlifecyclemanagement.cache;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

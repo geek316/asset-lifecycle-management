@@ -1,4 +1,4 @@
-package org.assetlifecyclemanagement.utilities;
+package org.assetlifecyclemanagement.Auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

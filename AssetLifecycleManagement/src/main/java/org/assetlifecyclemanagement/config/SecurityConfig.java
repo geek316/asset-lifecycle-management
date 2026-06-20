@@ -1,8 +1,8 @@
 package org.assetlifecyclemanagement.config;
 
 import lombok.RequiredArgsConstructor;
-import org.assetlifecyclemanagement.utilities.EmployeeDetailsService;
-import org.assetlifecyclemanagement.utilities.JWTAuthFilter;
+import org.assetlifecyclemanagement.Auth.EmployeeDetailsService;
+import org.assetlifecyclemanagement.Auth.JWTAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,7 +17,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.List;
 
@@ -36,7 +35,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/health", "/authenticate").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/employees").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+//                        .anyRequest().authenticated()
                 )
                 .oauth2Login(Customizer.withDefaults()); // Oauth2 authentication filter
 //        httpSecurity.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);  // JWT authentication filter

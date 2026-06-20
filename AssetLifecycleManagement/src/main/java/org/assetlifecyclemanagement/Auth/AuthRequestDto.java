@@ -1,4 +1,4 @@
-package org.assetlifecyclemanagement.utilities;
+package org.assetlifecyclemanagement.Auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

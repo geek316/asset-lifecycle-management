@@ -1,14 +1,18 @@
 package org.assetlifecyclemanagement.employee;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.assetlifecyclemanagement.employee.dto.EmployeeCreateRequestDTO;
 import org.assetlifecyclemanagement.employee.dto.EmployeeResponseDTO;
 import org.assetlifecyclemanagement.employee.dto.EmployeeUpdateRequestDTO;
+import org.assetlifecyclemanagement.utilities.PaginatedResponse;
 import org.assetlifecyclemanagement.exception.DuplicateEmployeeException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,7 +23,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
     private static final String CACHE_EMPLOYEES = "employees";
 
@@ -29,10 +33,16 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<EmployeeResponseDTO> getAllEmployees() {
+    public PaginatedResponse<EmployeeResponseDTO> getAllEmployees(Pageable pageable) {
+
         log.info("Fetching All employees");
-        List<EmployeeEntity> employeeEntityList = employeeRepository.findAll();
-        return employeeMapper.mapList(employeeEntityList);
+
+        Page<EmployeeEntity> employeeEntityPage = employeeRepository.findAll(pageable);
+        List<EmployeeResponseDTO> employeeResponseDtoList = employeeMapper.mapList(employeeEntityPage.getContent());
+
+        Page<EmployeeResponseDTO> dtoPage = new PageImpl<>(employeeResponseDtoList, employeeEntityPage.getPageable(), employeeEntityPage.getTotalElements());
+
+        return new PaginatedResponse<>(dtoPage);
     }
 
     @Transactional(readOnly = true)

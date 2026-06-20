@@ -1,4 +1,4 @@
-package org.assetlifecyclemanagement.utilities;
+package org.assetlifecyclemanagement.Auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
