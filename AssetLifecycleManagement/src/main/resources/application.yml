@@ -8,6 +8,22 @@ spring:
     name: AssetLifecycleManagement
   profiles:
     include: local
+# security
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            scope:
+              - openid
+              - profile
+              - email
+            authorization-grant-type: authorization_code
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
 # database
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres

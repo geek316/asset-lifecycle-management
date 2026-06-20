@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,8 +37,9 @@ public class SecurityConfig {
                         .requestMatchers("/health", "/authenticate").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/employees").permitAll()
                         .anyRequest().authenticated()
-                );
-        httpSecurity.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);  // JWT authentication filter
+                )
+                .oauth2Login(Customizer.withDefaults()); // Oauth2 authentication filter
+//        httpSecurity.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);  // JWT authentication filter
 //                .httpBasic(Customizer.withDefaults()); // basic authentication filter
         return httpSecurity.build();
     }

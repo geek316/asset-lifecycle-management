@@ -43,7 +43,7 @@ public class EmployeeController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Employees retrieved successfully", content = @Content)
     })
     @GetMapping
-    @PreAuthorize("hasAuthority('EMPLOYEE_READ') or hasRole('ADMIN')")
+//    @PreAuthorize("hasAuthority('EMPLOYEE_READ') or hasRole('ADMIN')")
     public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployees() {
         List<EmployeeResponseDTO> response = employeeService.getAllEmployees();
         return new ResponseEntity<>(response, HttpStatus.OK);
