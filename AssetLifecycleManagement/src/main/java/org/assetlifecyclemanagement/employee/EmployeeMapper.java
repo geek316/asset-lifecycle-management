@@ -19,11 +19,13 @@ public interface EmployeeMapper {
 
     @Mapping(target = "employeeId", ignore = true)
     @Mapping(target = "status", constant = "ACTIVE") // Set default status if not provided
+//    @Mapping(target = "department.getDeptName", source = "department")
     EmployeeEntity toEntity(EmployeeCreateRequestDTO dto);
 
     @Mapping(target = "employeeId", ignore = true)
     @Mapping(target = "firstName", ignore = true)    // Cannot change
     @Mapping(target = "lastName", ignore = true)     // Cannot change
+//    @Mapping(target = "department.getDeptName", source = "department")
     EmployeeEntity updateEntity(@MappingTarget EmployeeEntity entity, EmployeeUpdateRequestDTO dto);
 
     EmployeeResponseDTO toResponseDto(EmployeeEntity entity);

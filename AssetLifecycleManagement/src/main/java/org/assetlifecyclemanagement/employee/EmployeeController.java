@@ -30,7 +30,8 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @Operation(summary = "Get employee by employee code", description = "Retrieves detailed information of a specific employee using their unique employee code")
+    @Operation(summary = "Get employee by employee code",
+            description = "Retrieves detailed information of a specific employee using their unique employee code")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Employee found successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "Employee not found", content = @Content)

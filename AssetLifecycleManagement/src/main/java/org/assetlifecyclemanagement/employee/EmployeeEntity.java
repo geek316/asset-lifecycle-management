@@ -46,8 +46,9 @@ public class EmployeeEntity extends AuditEntity implements UserDetails {
     @Column(name = "email_id", nullable = false, unique = true, length = 150)
     private String email;
 
-    @Column(length = 100)
-    private String department;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "department_code", referencedColumnName = "department_code", nullable = false)
+//    private DepartmentEntity department;
 
     @Column(nullable = false, length = 100)
     private String designation;

@@ -39,7 +39,7 @@ spring:
 # JPA
   jpa:
     hibernate:
-      ddl-auto: validate  # Change from 'update' to 'validate' when using Flyway
+      ddl-auto: update  # Change from 'update' to 'validate' when using Flyway
     show-sql: false
     properties:
       hibernate:
